@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import urllib.request
+import regex
 
 
 def main():
@@ -14,7 +15,18 @@ Typos&action=raw")
     print()
 
     text = webUrl.read().decode('utf-8')
-    print(text)
+    # print(text)
+
+    typoRegex = regex.compile("\
+<(?:Typo)?\\s+(?:word=\"(.*?)\"\\s+)?find=\"(.*?)\"\\s+replace=\"(.*?)\
+\"\\s*/?>")
+
+    rules = regex.findall(typoRegex, text)
+    for rule in rules:
+        print("Rule Name = ", rule[0])
+        print("Rule Regex = ", rule[1])
+        print("Rule Substitution = ", rule[2])
+        print()
 
 if __name__ == "__main__":
     main()
