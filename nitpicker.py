@@ -30,8 +30,9 @@ Typos&action=raw")
 
     for rule in rules:
         ruleRegex = regex.compile(rule[1])
-        for line in stext.splitlines():
+        for index, line in enumerate(stext.splitlines()):
             if regex.search(ruleRegex, line):
+                print("{}:{}:".format(argv[1], index + 1))
                 print("line =", line)
                 print("Rule Name = ", rule[0])
                 print("Rule Regex = ", rule[1])
