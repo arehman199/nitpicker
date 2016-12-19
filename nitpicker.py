@@ -43,20 +43,27 @@ Typos&action=raw")
 
     for file in filelist:
         print("Examining file{}".format(file))
-        fh = open(file, 'r')
-        stext = fh.read()
-        fh.close()
 
-        for rule in rules:
-            ruleRegex = regex.compile(rule[1])
-            for index, line in enumerate(stext.splitlines()):
-                if regex.search(ruleRegex, line):
-                    print("{}:{}:".format(file, index + 1))
-                    print("Text:", line)
-                    print("Rule Name =", rule[0])
-                    print("Rule Regex =", rule[1])
-                    print("Rule Substitution =", rule[2])
-                    print()
+        fh = open(file, 'r')
+        try:
+            stext = fh.read()
+        except UnicodeDecodeError as e:
+            print("Read error: {}".format(e))
+            print()
+            fh.close()
+            continue
+        else:
+            fh.close()
+            for rule in rules:
+                ruleRegex = regex.compile(rule[1])
+                for index, line in enumerate(stext.splitlines()):
+                    if regex.search(ruleRegex, line):
+                        print("{}:{}:".format(file, index + 1))
+                        print("Text:", line)
+                        print("Rule Name =", rule[0])
+                        print("Rule Regex =", rule[1])
+                        print("Rule Substitution =", rule[2])
+                        print()
 
 if __name__ == "__main__":
     main(sys.argv[0:])
