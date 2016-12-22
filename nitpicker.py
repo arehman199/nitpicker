@@ -19,9 +19,9 @@ Typos&action=raw")
     htmlText = webUrl.read().decode('utf-8')
     # print(text)
 
-    typoRegex = regex.compile("\
+    typoRegex = "\
 <(?:Typo)?\\s+(?:word=\"(.*?)\"\\s+)?find=\"(.*?)\"\\s+replace=\"(.*?)\
-\"\\s*/?>")
+\"\\s*/?>"
 
     rules = regex.findall(typoRegex, htmlText)
 
@@ -62,9 +62,8 @@ Typos&action=raw")
         else:
             fh.close()
             for rule in rules:
-                ruleRegex = regex.compile(rule[1])
                 for index, line in enumerate(stext.splitlines()):
-                    if regex.search(ruleRegex, line):
+                    if regex.search(rule[1], line):
                         typoCount = typoCount + 1
                         print("{}:{}:".format(file, index + 1))
                         print("Text:", line)
