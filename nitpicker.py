@@ -46,8 +46,10 @@ Typos&action=raw")
         print(file)
     print()
 
+    typoCount = 0
+
     for file in filelist:
-        print("Examining file{}".format(file))
+        print("Examining file {}".format(file))
 
         fh = open(file, 'r')
         try:
@@ -63,6 +65,7 @@ Typos&action=raw")
                 ruleRegex = regex.compile(rule[1])
                 for index, line in enumerate(stext.splitlines()):
                     if regex.search(ruleRegex, line):
+                        typoCount = typoCount + 1
                         print("{}:{}:".format(file, index + 1))
                         print("Text:", line)
                         print("Rule Name =", rule[0])
@@ -70,7 +73,7 @@ Typos&action=raw")
                         print("Rule Substitution =", rule[2])
                         print()
 
+    print("typoCount = {}".format(typoCount))
+
 if __name__ == "__main__":
     main(sys.argv[0:])
-
-print("END")
