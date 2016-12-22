@@ -25,15 +25,20 @@ Typos&action=raw")
 
     rules = regex.findall(typoRegex, htmlText)
 
+    excludeDirs = set([".git"])
+    excludeFiles = ('.eps', '.gif', '.png', '.jpg')
+
     filelist = list()
     if os.path.exists(argv[1]):
         if os.path.isfile(argv[1]):
             if not os.path.islink(argv[1]):
                 filelist.append(argv[1])
         elif os.path.isdir(argv[1]):
-            for root, subs, files in os.walk(argv[1], topdown=True):
+            for root, dirs, files in os.walk(argv[1], topdown=True):
+                dirs[:] = [d for d in dirs if d not in excludeDirs]
                 for file in files:
-                    filelist.append(os.path.join(root, file))
+                    if not file.endswith(excludeFiles):
+                        filelist.append(os.path.join(root, file))
     filelist.sort()
 
     print("Following files will be searched for typos:")
