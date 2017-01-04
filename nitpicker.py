@@ -26,7 +26,7 @@ Typos&action=raw")
     rules = regex.findall(typoRegex, htmlText)
 
     excludeDirs = set([".git"])
-    excludeFiles = ('.eps', '.gif', '.png', '.jpg')
+    excludeFiles = ('.eps', '.gif', '.png', '.jpg', '.svg')
 
     filelist = list()
     if os.path.exists(argv[1]):
