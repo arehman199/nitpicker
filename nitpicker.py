@@ -68,24 +68,26 @@ Typos&action=raw")
                 for index, line in enumerate(stext.splitlines()):
                     matchobj = regex.search(rule[1], line)
                     if matchobj:
-                        print("Rule:", rule_name)
-                        print("Regex:", rule_regex)
-                        print("Substitution:", rule_subst)
-                        rstring = rule_subst
+                        typoCount = typoCount + 1
+
+                        # construct fixed line
+                        fixed = rule_subst
                         for i in range(1, rule_subst.count("$") + 1):
                             if(matchobj.group(i) != None):
-                                rstring = rstring.replace("${}".format(i),
-                                                          matchobj.group(i))
+                                fixed = fixed.replace("${}".format(i),
+                                                      matchobj.group(i))
                             else:
-                                rstring = rstring.replace("${}".format(i), "")
-                        typoCount = typoCount + 1
+                                fixed = fixed.replace("${}".format(i), "")
+
                         print("{}:{}".format(file, index + 1))
                         print("-", line, sep="")
-                        print("+", line.replace(matchobj.group(), rstring),
+                        print("+", line.replace(matchobj.group(), fixed),
                               sep="")
-                        print("Match:", matchobj.group())
-                        print("Replacement:", rstring)
-
+                        print("       Match:", matchobj.group())
+                        print(" Replacement:", fixed)
+                        print("        Rule:", rule_name)
+                        print("       Regex:", rule_regex)
+                        print("Substitution:", rule_subst)
                         print()
 
     print("typoCount = {}".format(typoCount))
