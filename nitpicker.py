@@ -62,14 +62,30 @@ Typos&action=raw")
         else:
             fh.close()
             for rule in rules:
+                rule_name = rule[0]
+                rule_regex = rule[1]
+                rule_subst = rule[2]
                 for index, line in enumerate(stext.splitlines()):
-                    if regex.search(rule[1], line):
+                    matchobj = regex.search(rule[1], line)
+                    if matchobj:
+                        print("Rule:", rule_name)
+                        print("Regex:", rule_regex)
+                        print("Substitution:", rule_subst)
+                        rstring = rule_subst
+                        for i in range(1, rule_subst.count("$") + 1):
+                            if(matchobj.group(i) != None):
+                                rstring = rstring.replace("${}".format(i),
+                                                          matchobj.group(i))
+                            else:
+                                rstring = rstring.replace("${}".format(i), "")
                         typoCount = typoCount + 1
-                        print("{}:{}:".format(file, index + 1))
-                        print("Text:", line)
-                        print("Rule Name =", rule[0])
-                        print("Rule Regex =", rule[1])
-                        print("Rule Substitution =", rule[2])
+                        print("{}:{}".format(file, index + 1))
+                        print("-", line, sep="")
+                        print("+", line.replace(matchobj.group(), rstring),
+                              sep="")
+                        print("Match:", matchobj.group())
+                        print("Replacement:", rstring)
+
                         print()
 
     print("typoCount = {}".format(typoCount))
