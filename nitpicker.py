@@ -61,11 +61,11 @@ Typos&action=raw")
             continue
         else:
             fh.close()
-            for rule in rules:
-                rule_name = rule[0]
-                rule_regex = rule[1]
-                rule_subst = rule[2]
-                for index, line in enumerate(stext.splitlines()):
+            for index, line in enumerate(stext.splitlines()):
+                for rule in rules:
+                    rule_name = rule[0]
+                    rule_regex = rule[1]
+                    rule_subst = rule[2]
                     matchobj = regex.search(rule[1], line)
                     if matchobj:
                         typoCount = typoCount + 1
